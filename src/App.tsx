@@ -5,7 +5,8 @@ import './App.css'
 export default function App() {
     const [previewPhoto, setPreviewPhoto] = useState<string | null>(null)
 
-    const logoPath = '/images/business_logo.jpg'
+    const imageBase = `${import.meta.env.BASE_URL}images/`
+    const logoPath = `${imageBase}business_logo.jpg`
     const facebookUrl = 'https://www.facebook.com/profile.php?id=100094896520175'
 
     const services = [
@@ -163,7 +164,7 @@ export default function App() {
                             >
                                 <button type="button" className="block w-full text-left" onClick={() => setPreviewPhoto(photo)}>
                                     <img
-                                        src={`/images/${photo}`}
+                                        src={`${imageBase}${photo}`}
                                         alt="Featured GX Rose Prints sample"
                                         className="h-44 w-full cursor-zoom-in object-cover md:h-56"
                                         loading="lazy"
@@ -195,7 +196,7 @@ export default function App() {
                             >
                                 <button type="button" className="block w-full text-left" onClick={() => setPreviewPhoto(photo)}>
                                     <img
-                                        src={`/images/${photo}`}
+                                        src={`${imageBase}${photo}`}
                                         alt="GX Rose Prints product sample"
                                         className="w-full cursor-zoom-in object-cover"
                                         loading="lazy"
@@ -270,7 +271,7 @@ export default function App() {
                             <X size={20} />
                         </button>
                         <img
-                            src={`/images/${previewPhoto}`}
+                            src={`${imageBase}${previewPhoto}`}
                             alt="GX Rose Prints product enlarged preview"
                             className="max-h-[92vh] w-full rounded-lg border-2 border-white object-contain"
                         />
