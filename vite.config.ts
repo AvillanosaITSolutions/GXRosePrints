@@ -1,11 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-const repoName = 'GXRosePrints'
-
-export default defineConfig(({ mode }) => ({
+export default defineConfig(() => ({
   plugins: [react()],
-  base: mode === 'production' ? `/${repoName}/` : '/',
+  base: '/',
   server: {
     port: 3000,
     open: true,
