@@ -4,6 +4,8 @@ import './App.css'
 
 export default function App() {
     const [previewPhoto, setPreviewPhoto] = useState<string | null>(null)
+    const [previewLoading, setPreviewLoading] = useState(false)
+    const [previewError, setPreviewError] = useState(false)
 
     const imageBase = `${import.meta.env.BASE_URL}images/`
     const logoPath = `${imageBase}business_logo.jpg`
@@ -67,6 +69,20 @@ export default function App() {
         'IMG_9071.jpg',
         'IMG_9688.jpg',
     ]
+
+    const buildImageSrc = (photo: string) => `${imageBase}${photo}`
+
+    const openPreview = (photo: string) => {
+        setPreviewError(false)
+        setPreviewLoading(true)
+        setPreviewPhoto(buildImageSrc(photo))
+    }
+
+    const closePreview = () => {
+        setPreviewPhoto(null)
+        setPreviewLoading(false)
+        setPreviewError(false)
+    }
 
     return (
         <main className="min-h-screen bg-[#ececec] p-3 pb-24 md:p-8 md:pb-8">
@@ -162,9 +178,9 @@ export default function App() {
                                 className={`image-tile overflow-hidden rounded-lg border-4 border-black bg-white ${index % 3 === 0 ? 'shadow-[6px_6px_0_0_#ff0f53]' : index % 3 === 1 ? 'shadow-[6px_6px_0_0_#f2d447]' : 'shadow-[6px_6px_0_0_#6ec1e4]'
                                     }`}
                             >
-                                <button type="button" className="block w-full text-left" onClick={() => setPreviewPhoto(photo)}>
+                                <button type="button" className="block w-full text-left" onClick={() => openPreview(photo)}>
                                     <img
-                                        src={`${imageBase}${photo}`}
+                                        src={buildImageSrc(photo)}
                                         alt="Featured GX Rose Prints sample"
                                         className="h-44 w-full cursor-zoom-in object-cover md:h-56"
                                         loading="lazy"
@@ -194,9 +210,9 @@ export default function App() {
                                             : 'shadow-[4px_4px_0_0_#000000]'
                                     }`}
                             >
-                                <button type="button" className="block w-full text-left" onClick={() => setPreviewPhoto(photo)}>
+                                <button type="button" className="block w-full text-left" onClick={() => openPreview(photo)}>
                                     <img
-                                        src={`${imageBase}${photo}`}
+                                        src={buildImageSrc(photo)}
                                         alt="GX Rose Prints product sample"
                                         className="w-full cursor-zoom-in object-cover"
                                         loading="lazy"
@@ -256,7 +272,7 @@ export default function App() {
             {previewPhoto && (
                 <div
                     className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-                    onClick={() => setPreviewPhoto(null)}
+                    onClick={closePreview}
                     role="dialog"
                     aria-modal="true"
                     aria-label="Image preview"
@@ -265,15 +281,31 @@ export default function App() {
                         <button
                             type="button"
                             className="absolute right-2 top-2 rounded-full border-2 border-white bg-black/70 p-2 text-white"
-                            onClick={() => setPreviewPhoto(null)}
+                            onClick={closePreview}
                             aria-label="Close image preview"
                         >
                             <X size={20} />
                         </button>
+                        {previewLoading && !previewError && (
+                            <div className="absolute inset-0 flex items-center justify-center rounded-lg border-2 border-white bg-black/55 px-4 text-center text-sm font-bold text-white">
+                                Loading preview...
+                            </div>
+                        )}
+                        {previewError && (
+                            <div className="absolute inset-0 flex items-center justify-center rounded-lg border-2 border-white bg-black/75 px-6 text-center text-sm font-bold text-white">
+                                Unable to load preview image. Please try another photo.
+                            </div>
+                        )}
                         <img
-                            src={`${imageBase}${previewPhoto}`}
+                            src={previewPhoto}
                             alt="GX Rose Prints product enlarged preview"
                             className="max-h-[92vh] w-full rounded-lg border-2 border-white object-contain"
+                            onLoad={() => setPreviewLoading(false)}
+                            onError={() => {
+                                setPreviewLoading(false)
+                                setPreviewError(true)
+                            }}
+                            loading="eager"
                         />
                     </div>
                 </div>
