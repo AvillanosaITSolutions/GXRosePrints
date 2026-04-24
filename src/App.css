@@ -1,0 +1,75 @@
+/* App.css - Custom styles for GX Rose Prints */
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Motion utilities */
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes softGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(255, 15, 83, 0.08);
+  }
+}
+
+.animate-rise {
+  animation: riseIn 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.tap-card {
+  transition: transform 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+}
+
+.tap-card:hover {
+  transform: translateY(-2px);
+}
+
+.tap-card:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.image-tile {
+  transition: transform 260ms ease, filter 260ms ease;
+}
+
+.image-tile:hover {
+  transform: translateY(-3px) scale(1.01);
+  filter: saturate(1.05);
+}
+
+.headline-accent {
+  animation: softGlow 4.5s ease-in-out infinite;
+}
+
+/* Remove default form styles */
+input:focus,
+textarea:focus {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise,
+  .headline-accent {
+    animation: none !important;
+  }
+
+  .tap-card,
+  .image-tile {
+    transition: none !important;
+  }
+}
